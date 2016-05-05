@@ -34,6 +34,16 @@ shinyUI(fluidPage(
     ),
     mainPanel(
       tabsetPanel(
+        tabPanel("Data",
+                 column(8,
+                        h4("Independent variables"),
+                        tableOutput("Ind")
+                 ),
+                 column(4,
+                        h4("Dependent variables"),
+                        tableOutput("Dep")
+                 )
+        ),
         tabPanel("Prediction table",
                  h4("This table is the cross validation table"),
                  tableOutput("pred.table")
@@ -46,16 +56,6 @@ shinyUI(fluidPage(
         ),
         tabPanel("Tuning grid",
                  tableOutput("grid")
-                 ),
-        tabPanel("Data",
-                 column(8,
-                        h4("Independent variables"),
-                        tableOutput("Ind")
-                        ),
-                 column(4,
-                        h4("Dependent variables"),
-                        tableOutput("Dep")
-                 )
                  ),
         tabPanel("Model list",
                  dataTableOutput("caret_table")
