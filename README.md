@@ -1,1 +1,0 @@
-Application to facilitate machine learning training with the caret package
