@@ -6,7 +6,7 @@ library(caret)
 library(plyr)
 library(magrittr)
 library(readxl)
-
+library(pls)
 
 shinyServer(function(input, output) {
 
@@ -21,7 +21,7 @@ shinyServer(function(input, output) {
       if(caret.table[,2][i] == "Regression"){type[i] <- "Regression"}
       if(length(unlist(caret.table[,2][i])) == 2){type[i] <- "Both"}
     }
-    data.frame(name = unlist(caret.table[,1]),type)
+    data.frame(.=names(caret.table[,1]),name = unlist(caret.table[,1]),type)
   })
   
   output$algo.info <- renderPrint({
@@ -30,7 +30,12 @@ shinyServer(function(input, output) {
   
   Dep <- reactive({
     if(is.null(input$Dep)){
-      iris$Species
+      if(input$Trainproblem == "Regression"){
+        gasoline$octane
+      }else{
+        iris$Species
+      }
+      
     }else{
       read_excel(input$Dep$datapath)
     }
@@ -40,13 +45,17 @@ shinyServer(function(input, output) {
   })
   Ind <- reactive({
     if(is.null(input$Ind)){
-      iris[,1:4]
+      if(input$Trainproblem == "Regression"){
+        gasoline$NIR
+      }else{
+        iris[,1:4]
+      }
     }else{
       read_excel(input$Dep$datapath)
     }
   })
   output$Ind <- renderTable({
-    Ind()
+    Ind() %>% as.matrix
   })
   output$grid <- renderTable({
     grid <- getModelInfo(model = input$algo)[[input$algo]]$grid
@@ -100,7 +109,6 @@ shinyServer(function(input, output) {
   
   output$model.print <- renderPrint({
     print(model())
-    str(model())
   })
   
   output$model.plot <- renderPlot({

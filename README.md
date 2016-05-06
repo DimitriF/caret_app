@@ -8,7 +8,7 @@ http://cran.r-project.org/
 Install the dependencies by running this in the R console:
 ```r
 install.packages(
-    c('shiny','caret',"plyr","maggritr","readxl")
+    c('shiny','caret',"plyr","maggritr","readxl","pls")
     )
 
 ```
@@ -16,5 +16,5 @@ install.packages(
 Finally, launch the application by running this line
 
 ```r
-shiny::runGitHub(repo='caret_app', username='DimitriF')
+shiny::runGitHub(repo='caret_app', username='DimitriF',launch.browser=T)
 ```

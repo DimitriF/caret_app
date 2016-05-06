@@ -12,11 +12,12 @@ caret.table <- cbind(
   llply(getModelInfo(),function(l){l$type})
 )
 Train.model.algo.choice <- names(caret.table[,1])
-names(Train.model.algo.choice) <- caret.table[,1]
+# names(Train.model.algo.choice) <- caret.table[,1]
 
 shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
+      h5("Upload here two excel files with the independent and dependent variables, the first row must contain ths column names. If no files are upload, default dataset will be used"),
       fileInput("Ind","Independent variable file",accept = "xlsx"),
       fileInput("Dep","Dependent variable file",accept = "xlsx"),
       selectizeInput("algo",'Choice of the algorythm',choices= Train.model.algo.choice,selected='rf'),
@@ -35,13 +36,13 @@ shinyUI(fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Data",
-                 column(8,
-                        h4("Independent variables"),
-                        tableOutput("Ind")
-                 ),
-                 column(4,
-                        h4("Dependent variables"),
-                        tableOutput("Dep")
+                 tabsetPanel(
+                   tabPanel("Independent variables",
+                     tableOutput("Ind")
+                   ),
+                   tabPanel("Dependent variables",
+                            tableOutput("Dep")
+                   )
                  )
         ),
         tabPanel("Prediction table",
